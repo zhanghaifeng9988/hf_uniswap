@@ -2,8 +2,8 @@
 pragma solidity ^0.8.20;
 
 import "./MEME_Token.sol";
-import "../v2/interfaces/IUniswapV2Router02.sol";
-import "../v2/interfaces/IUniswapV2Factory.sol";
+import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
+import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
 
 contract MEME_Inscription {
     // 添加owner变量声明
@@ -26,6 +26,7 @@ contract MEME_Inscription {
   - swapExactETHForTokens ：用确定数量的ETH换取代币
   - swapExactTokensForETH ：用确定数量的代币换取ETH
   - 还支持带有转账费用的代币交换（Supporting Fee On Transfer Tokens） */
+  
     IUniswapV2Router02 public immutable uniswapV2Router;
 
 /*     IUniswapV2Factory 接口主要用于：通过Factory创建Meme代币和ETH的交易对
