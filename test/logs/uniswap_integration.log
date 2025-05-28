@@ -1,167 +1,222 @@
 No files changed, compilation skipped
 
-Ran 6 tests for test/UniswapIntegration.t.sol:UniswapIntegrationTest
-[PASS] testBuyMemeAddsLiquidity() (gas: 171751)
+Ran 1 test for test/UniswapIntegration.t.sol:UniswapIntegrationTest
+[PASS] testBasicFlow() (gas: 550567)
 Traces:
-  [211551] UniswapIntegrationTest::testBuyMemeAddsLiquidity()
-    ├─ [2606] MockERC20::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
-    │   └─ ← [Return] 100000000000000000 [1e17]
-    ├─ [5298] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
-    │   ├─ [2626] MEME_Token::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [delegatecall]
-    │   │   └─ ← [Return] 5
-    │   └─ ← [Return] 5
-    ├─ [2358] MockUniswapV2Pair::totalSupply() [staticcall]
-    │   └─ ← [Return] 0
-    ├─ [2423] MEME_Inscription::owner() [staticcall]
-    │   └─ ← [Return] UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]
-    ├─ [0] VM::deal(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 101000000000000000 [1.01e17])
+  [693474] UniswapIntegrationTest::testBasicFlow()
+    ├─ [0] VM::deal(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 200000000000000000 [2e17])
     │   └─ ← [Return]
-    ├─ [0] VM::prank(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
-    │   └─ ← [Return]
-    ├─ [160218] MEME_Inscription::buyMeme{value: 1000000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 0)
-    │   ├─ [2841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
-    │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    ├─ [94678] MEME_Inscription::mintInscription{value: 1000000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d)
+    │   ├─ [283] MEME_Token::decimals() [staticcall]
+    │   │   └─ ← [Return] 18
+    │   ├─ [2599] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::minted() [staticcall]
+    │   │   ├─ [2433] MEME_Token::minted() [delegatecall]
+    │   │   │   └─ ← [Return] 0
+    │   │   └─ ← [Return] 0
     │   ├─ [2511] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::totalSupply() [staticcall]
     │   │   ├─ [2345] MEME_Token::totalSupply() [delegatecall]
-    │   │   │   └─ ← [Return] 100
-    │   │   └─ ← [Return] 100
-    │   ├─ [36318] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::mint(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 5)
-    │   │   ├─ [36143] MEME_Token::mint(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 5) [delegatecall]
-    │   │   │   ├─ emit MintCalled(caller: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], amount: 5)
-    │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 5)
+    │   │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─ [51414] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   │   ├─ [51239] MEME_Token::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   ├─ emit MintCalled(caller: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], amount: 10000000000000000000 [1e19])
+    │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000 [1e19])
     │   │   │   └─ ← [Return]
     │   │   └─ ← [Return]
-    │   ├─ [25951] MockUniswapV2Router::swapExactETHForTokensSupportingFeeOnTransferTokens{value: 950000000000000}(0, [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d], UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 1)
-    │   │   ├─ [826] MockUniswapV2Factory::getPair(MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d) [staticcall]
-    │   │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
-    │   │   ├─ [2606] MockERC20::balanceOf(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9]) [staticcall]
-    │   │   │   └─ ← [Return] 1000000000000000000 [1e18]
-    │   │   ├─ [6975] MockERC20::transfer(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 950000000000000 [9.5e14])
-    │   │   │   └─ ← [Return] true
-    │   │   ├─ [2364] MockUniswapV2Pair::getReserves() [staticcall]
-    │   │   │   └─ ← [Return] 100000000000000000 [1e17], 5000000000000000000 [5e18], 1
-    │   │   ├─ [2798] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9]) [staticcall]
-    │   │   │   ├─ [2626] MEME_Token::balanceOf(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9]) [delegatecall]
-    │   │   │   │   └─ ← [Return] 10
-    │   │   │   └─ ← [Return] 10
-    │   │   ├─ [5375] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transfer(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 0)
-    │   │   │   ├─ [5197] MEME_Token::transfer(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 0) [delegatecall]
-    │   │   │   │   ├─ emit Transfer(from: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 0)
-    │   │   │   │   └─ ← [Return] true
-    │   │   │   └─ ← [Return] true
-    │   │   └─ ← [Return] 0x00000000000000000000000000000000000000000000000000a6ab45b37b0a5b
-    │   ├─ [24560] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 5)
-    │   │   ├─ [24382] MEME_Token::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 5) [delegatecall]
-    │   │   │   ├─ emit Approval(owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], spender: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 5)
+    │   ├─ [67] UniswapIntegrationTest::receive{value: 950000000000000}()
+    │   │   └─ ← [Stop]
+    │   ├─ [2841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   ├─ [67] UniswapIntegrationTest::receive{value: 50000000000000}()
+    │   │   └─ ← [Stop]
+    │   ├─ emit MemeMinted(token: 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, minter: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], amount: 10)
+    │   └─ ← [Return]
+    ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   ├─ [628] MEME_Token::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [delegatecall]
+    │   │   └─ ← [Return] 10000000000000000000 [1e19]
+    │   └─ ← [Return] 10000000000000000000 [1e19]
+    ├─ [24560] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::approve(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19])
+    │   ├─ [24382] MEME_Token::approve(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   ├─ emit Approval(owner: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 10000000000000000000 [1e19])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Return] true
+    ├─ [245458] MEME_Inscription::addLiquidity{value: 1000000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 10000000000000000000 [1e19], 0, 0)
+    │   ├─ [841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   ├─ [28038] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transferFrom(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19])
+    │   │   ├─ [27854] MEME_Token::transferFrom(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   ├─ emit Transfer(from: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 10000000000000000000 [1e19])
+    │   │   │   ├─ emit Approval(owner: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 0)
     │   │   │   └─ ← [Return] true
     │   │   └─ ← [Return] true
-    │   ├─ [42808] MockUniswapV2Router::addLiquidityETH{value: 50000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 5, 0, 0, UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 1)
+    │   ├─ [24560] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 10000000000000000000 [1e19])
+    │   │   ├─ [24382] MEME_Token::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   ├─ emit Approval(owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], spender: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 10000000000000000000 [1e19])
+    │   │   │   └─ ← [Return] true
+    │   │   └─ ← [Return] true
+    │   ├─ [180111] MockUniswapV2Router::addLiquidityETH{value: 1000000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 10000000000000000000 [1e19], 0, 0, UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 1)
     │   │   ├─ [841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
     │   │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
-    │   │   ├─ [1375] MockERC20::transfer(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 50000000000000 [5e13])
+    │   │   ├─ [10565] MockERC20::mint(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 1000000000000000 [1e15])
+    │   │   │   └─ ← [Return]
+    │   │   ├─ [23275] MockERC20::transfer(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 1000000000000000 [1e15])
     │   │   │   └─ ← [Return] true
-    │   │   ├─ [8478] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transferFrom(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 5)
-    │   │   │   ├─ [8294] MEME_Token::transferFrom(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 5) [delegatecall]
-    │   │   │   │   ├─ emit Transfer(from: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], value: 5)
+    │   │   ├─ [28038] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transferFrom(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 10000000000000000000 [1e19])
+    │   │   │   ├─ [27854] MEME_Token::transferFrom(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   │   ├─ emit Transfer(from: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], value: 10000000000000000000 [1e19])
     │   │   │   │   ├─ emit Approval(owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], spender: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 0)
     │   │   │   │   └─ ← [Return] true
     │   │   │   └─ ← [Return] true
-    │   │   ├─ [29186] MockUniswapV2Pair::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   │   ├─ [109120] MockUniswapV2Pair::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
     │   │   │   ├─ [606] MockERC20::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
-    │   │   │   │   └─ ← [Return] 101000000000000000 [1.01e17]
-    │   │   │   ├─ [798] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
-    │   │   │   │   ├─ [626] MEME_Token::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [delegatecall]
-    │   │   │   │   │   └─ ← [Return] 10
-    │   │   │   │   └─ ← [Return] 10
-    │   │   │   └─ ← [Return] 1000
-    │   │   └─ ← [Return] 5, 50000000000000 [5e13], 1000
-    │   └─ ← [Stop]
-    ├─ [423] MEME_Inscription::owner() [staticcall]
-    │   └─ ← [Return] UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]
-    ├─ [606] MockERC20::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
-    │   └─ ← [Return] 101000000000000000 [1.01e17]
-    ├─ [798] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
-    │   ├─ [626] MEME_Token::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [delegatecall]
-    │   │   └─ ← [Return] 10
-    │   └─ ← [Return] 10
-    ├─ [358] MockUniswapV2Pair::totalSupply() [staticcall]
-    │   └─ ← [Return] 1000
-    └─ ← [Return]
-
-[PASS] testCalculatePairAddress() (gas: 3098)
-Traces:
-  [3098] UniswapIntegrationTest::testCalculatePairAddress()
-    ├─ [0] VM::warp(2)
+    │   │   │   │   └─ ← [Return] 1000000000000000 [1e15]
+    │   │   │   ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
+    │   │   │   │   ├─ [628] MEME_Token::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [delegatecall]
+    │   │   │   │   │   └─ ← [Return] 10000000000000000000 [1e19]
+    │   │   │   │   └─ ← [Return] 10000000000000000000 [1e19]
+    │   │   │   └─ ← [Return] 99999999999999000 [9.999e16]
+    │   │   └─ ← [Return] 10000000000000000000 [1e19], 1000000000000000 [1e15], 99999999999999000 [9.999e16]
     │   └─ ← [Return]
-    └─ ← [Return]
-
-[PASS] testGetAmountsIn() (gas: 16437)
-Traces:
-  [16437] UniswapIntegrationTest::testGetAmountsIn()
-    ├─ [2364] MockUniswapV2Pair::getReserves() [staticcall]
-    │   └─ ← [Return] 100000000000000000 [1e17], 5000000000000000000 [5e18], 1
-    ├─ [2359] MockUniswapV2Pair::token0() [staticcall]
+    ├─ [826] MockUniswapV2Factory::getPair(MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d) [staticcall]
+    │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    ├─ [397] MockUniswapV2Pair::getReserves() [staticcall]
+    │   └─ ← [Return] 1000000000000000 [1e15], 10000000000000000000 [1e19], 1
+    ├─ [388] MockUniswapV2Pair::token0() [staticcall]
     │   └─ ← [Return] MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]
-    ├─ [2800] MockUniswapV2Pair::token1() [staticcall]
-    │   └─ ← [Return] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d
-    └─ ← [Return]
-
-[PASS] testGetAmountsOut() (gas: 16358)
-Traces:
-  [16358] UniswapIntegrationTest::testGetAmountsOut()
-    ├─ [2364] MockUniswapV2Pair::getReserves() [staticcall]
-    │   └─ ← [Return] 100000000000000000 [1e17], 5000000000000000000 [5e18], 1
-    ├─ [2359] MockUniswapV2Pair::token0() [staticcall]
-    │   └─ ← [Return] MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]
-    ├─ [2800] MockUniswapV2Pair::token1() [staticcall]
-    │   └─ ← [Return] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d
-    └─ ← [Return]
-
-[PASS] testMemeMintingCorrected() (gas: 77595)
-Traces:
-  [77595] UniswapIntegrationTest::testMemeMintingCorrected()
-    ├─ [5298] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
-    │   ├─ [2626] MEME_Token::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [delegatecall]
-    │   │   └─ ← [Return] 10
-    │   └─ ← [Return] 10
-    ├─ [2423] MEME_Inscription::owner() [staticcall]
-    │   └─ ← [Return] UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]
-    ├─ [0] VM::deal(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 100000 [1e5])
+    ├─ [0] VM::deal(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 150000000000000000 [1.5e17])
     │   └─ ← [Return]
-    ├─ [0] VM::prank(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
-    │   └─ ← [Return]
-    ├─ [45162] MEME_Inscription::mintInscription{value: 100000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d)
-    │   ├─ [2599] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::minted() [staticcall]
-    │   │   ├─ [2433] MEME_Token::minted() [delegatecall]
-    │   │   │   └─ ← [Return] 25
-    │   │   └─ ← [Return] 25
-    │   ├─ [2511] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::totalSupply() [staticcall]
-    │   │   ├─ [2345] MEME_Token::totalSupply() [delegatecall]
-    │   │   │   └─ ← [Return] 100
-    │   │   └─ ← [Return] 100
-    │   ├─ [15218] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10)
-    │   │   ├─ [15043] MEME_Token::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10) [delegatecall]
-    │   │   │   ├─ emit MintCalled(caller: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], amount: 10)
-    │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10)
+    ├─ [47278] MEME_Inscription::mintInscription{value: 1000000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d)
+    │   ├─ [283] MEME_Token::decimals() [staticcall]
+    │   │   └─ ← [Return] 18
+    │   ├─ [599] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::minted() [staticcall]
+    │   │   ├─ [433] MEME_Token::minted() [delegatecall]
+    │   │   │   └─ ← [Return] 10000000000000000000 [1e19]
+    │   │   └─ ← [Return] 10000000000000000000 [1e19]
+    │   ├─ [511] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::totalSupply() [staticcall]
+    │   │   ├─ [345] MEME_Token::totalSupply() [delegatecall]
+    │   │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   │   └─ ← [Return] 1000000000000000000000 [1e21]
+    │   ├─ [25514] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19])
+    │   │   ├─ [25339] MEME_Token::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   ├─ emit MintCalled(caller: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], amount: 10000000000000000000 [1e19])
+    │   │   │   ├─ emit Transfer(from: 0x0000000000000000000000000000000000000000, to: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], value: 10000000000000000000 [1e19])
     │   │   │   └─ ← [Return]
     │   │   └─ ← [Return]
-    │   ├─ [67] UniswapIntegrationTest::receive{value: 5000}()
+    │   ├─ [67] UniswapIntegrationTest::receive{value: 950000000000000}()
     │   │   └─ ← [Stop]
-    │   ├─ [67] UniswapIntegrationTest::receive{value: 95000}()
+    │   ├─ [841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   ├─ [67] UniswapIntegrationTest::receive{value: 50000000000000}()
     │   │   └─ ← [Stop]
     │   ├─ emit MemeMinted(token: 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, minter: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], amount: 10)
-    │   └─ ← [Stop]
-    ├─ [798] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
-    │   ├─ [626] MEME_Token::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [delegatecall]
-    │   │   └─ ← [Return] 20
-    │   └─ ← [Return] 20
+    │   └─ ← [Return]
+    ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   ├─ [628] MEME_Token::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [delegatecall]
+    │   │   └─ ← [Return] 10000000000000000000 [1e19]
+    │   └─ ← [Return] 10000000000000000000 [1e19]
+    ├─ [22460] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::approve(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19])
+    │   ├─ [22282] MEME_Token::approve(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   ├─ emit Approval(owner: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 10000000000000000000 [1e19])
+    │   │   └─ ← [Return] true
+    │   └─ ← [Return] true
+    ├─ [78677] MEME_Inscription::addLiquidity{value: 100000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 10000000000000000000 [1e19], 0, 0)
+    │   ├─ [841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   ├─ [26038] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transferFrom(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19])
+    │   │   ├─ [25854] MEME_Token::transferFrom(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   ├─ emit Transfer(from: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 10000000000000000000 [1e19])
+    │   │   │   ├─ emit Approval(owner: UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], spender: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], value: 0)
+    │   │   │   └─ ← [Return] true
+    │   │   └─ ← [Return] true
+    │   ├─ [22460] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 10000000000000000000 [1e19])
+    │   │   ├─ [22282] MEME_Token::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   ├─ emit Approval(owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], spender: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 10000000000000000000 [1e19])
+    │   │   │   └─ ← [Return] true
+    │   │   └─ ← [Return] true
+    │   ├─ [19930] MockUniswapV2Router::addLiquidityETH{value: 100000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 10000000000000000000 [1e19], 0, 0, UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], 1)
+    │   │   ├─ [841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   │   ├─ [3765] MockERC20::mint(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 100000000000000 [1e14])
+    │   │   │   └─ ← [Return]
+    │   │   ├─ [1375] MockERC20::transfer(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 100000000000000 [1e14])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [6138] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transferFrom(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 10000000000000000000 [1e19])
+    │   │   │   ├─ [5954] MEME_Token::transferFrom(MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 10000000000000000000 [1e19]) [delegatecall]
+    │   │   │   │   ├─ emit Transfer(from: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], to: MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], value: 10000000000000000000 [1e19])
+    │   │   │   │   ├─ emit Approval(owner: MEME_Inscription: [0xc7183455a4C133Ae270771860664b6B7ec320bB1], spender: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 0)
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [4539] MockUniswapV2Pair::mint(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496])
+    │   │   │   ├─ [606] MockERC20::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
+    │   │   │   │   └─ ← [Return] 1100000000000000 [1.1e15]
+    │   │   │   ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
+    │   │   │   │   ├─ [628] MEME_Token::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [delegatecall]
+    │   │   │   │   │   └─ ← [Return] 20000000000000000000 [2e19]
+    │   │   │   │   └─ ← [Return] 20000000000000000000 [2e19]
+    │   │   │   └─ ← [Return] 110000000000000000 [1.1e17]
+    │   │   └─ ← [Return] 10000000000000000000 [1e19], 100000000000000 [1e14], 110000000000000000 [1.1e17]
+    │   └─ ← [Return]
+    ├─ [826] MockUniswapV2Factory::getPair(MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d) [staticcall]
+    │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    ├─ [397] MockUniswapV2Pair::getReserves() [staticcall]
+    │   └─ ← [Return] 1100000000000000 [1.1e15], 20000000000000000000 [2e19], 1
+    ├─ [388] MockUniswapV2Pair::token0() [staticcall]
+    │   └─ ← [Return] MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]
+    ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   ├─ [628] MEME_Token::balanceOf(UniswapIntegrationTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [delegatecall]
+    │   │   └─ ← [Return] 0
+    │   └─ ← [Return] 0
+    ├─ [0] VM::prank(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D])
+    │   └─ ← [Return]
+    ├─ [110908] MEME_Inscription::buyMeme{value: 50000000000000000}(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, 0)
+    │   ├─ [841] MockUniswapV2Factory::getPair(0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d, MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]) [staticcall]
+    │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   ├─ [94030] MockUniswapV2Router::swapExactETHForTokensSupportingFeeOnTransferTokens{value: 47500000000000000}(0, [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f, 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d], user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 1)
+    │   │   ├─ [826] MockUniswapV2Factory::getPair(MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f], 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d) [staticcall]
+    │   │   │   └─ ← [Return] MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]
+    │   │   ├─ [397] MockUniswapV2Pair::getReserves() [staticcall]
+    │   │   │   └─ ← [Return] 1100000000000000 [1.1e15], 20000000000000000000 [2e19], 1
+    │   │   ├─ [388] MockUniswapV2Pair::token0() [staticcall]
+    │   │   │   └─ ← [Return] MockERC20: [0x5615dEB798BB3E4dFa0139dFa1b3D433Cc23b72f]
+    │   │   ├─ [3765] MockERC20::mint(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 47500000000000000 [4.75e16])
+    │   │   │   └─ ← [Return]
+    │   │   ├─ [1375] MockERC20::transfer(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], 47500000000000000 [4.75e16])
+    │   │   │   └─ ← [Return] true
+    │   │   ├─ [56732] MockUniswapV2Pair::swap(0, 19547325102880658436 [1.954e19], MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 0x)
+    │   │   │   ├─ [397] MockUniswapV2Pair::getReserves() [staticcall]
+    │   │   │   │   └─ ← [Return] 1100000000000000 [1.1e15], 20000000000000000000 [2e19], 1
+    │   │   │   ├─ [24560] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 19547325102880658436 [1.954e19])
+    │   │   │   │   ├─ [24382] MEME_Token::approve(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 19547325102880658436 [1.954e19]) [delegatecall]
+    │   │   │   │   │   ├─ emit Approval(owner: MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], spender: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 19547325102880658436 [1.954e19])
+    │   │   │   │   │   └─ ← [Return] true
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ [25275] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transfer(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 19547325102880658436 [1.954e19])
+    │   │   │   │   ├─ [25097] MEME_Token::transfer(MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], 19547325102880658436 [1.954e19]) [delegatecall]
+    │   │   │   │   │   ├─ emit Transfer(from: MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2], to: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], value: 19547325102880658436 [1.954e19])
+    │   │   │   │   │   └─ ← [Return] true
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   ├─ [606] MockERC20::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
+    │   │   │   │   └─ ← [Return] 48600000000000000 [4.86e16]
+    │   │   │   ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [staticcall]
+    │   │   │   │   ├─ [628] MEME_Token::balanceOf(MockUniswapV2Pair: [0x4f81992FCe2E1846dD528eC0102e6eE1f61ed3e2]) [delegatecall]
+    │   │   │   │   │   └─ ← [Return] 452674897119341564 [4.526e17]
+    │   │   │   │   └─ ← [Return] 452674897119341564 [4.526e17]
+    │   │   │   └─ ← [Return]
+    │   │   ├─ [25275] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::transfer(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 19547325102880658436 [1.954e19])
+    │   │   │   ├─ [25097] MEME_Token::transfer(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 19547325102880658436 [1.954e19]) [delegatecall]
+    │   │   │   │   ├─ emit Transfer(from: MockUniswapV2Router: [0x5991A2dF15A8F6A256D3Ec51E99254Cd3fb576A9], to: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], value: 19547325102880658436 [1.954e19])
+    │   │   │   │   └─ ← [Return] true
+    │   │   │   └─ ← [Return] true
+    │   │   └─ ← [Return]
+    │   ├─ [67] UniswapIntegrationTest::receive{value: 2500000000000000}()
+    │   │   └─ ← [Stop]
+    │   └─ ← [Return]
+    ├─ [800] 0x746326d3E4e54BA617F8aB39A21b7420aE8bF97d::balanceOf(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [staticcall]
+    │   ├─ [628] MEME_Token::balanceOf(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [delegatecall]
+    │   │   └─ ← [Return] 19547325102880658436 [1.954e19]
+    │   └─ ← [Return] 19547325102880658436 [1.954e19]
     └─ ← [Return]
 
-[PASS] testQuote() (gas: 519)
-Traces:
-  [519] UniswapIntegrationTest::testQuote()
-    └─ ← [Return]
+Suite result: ok. 1 passed; 0 failed; 0 skipped; finished in 2.66ms (1.02ms CPU time)
 
-Suite result: ok. 6 passed; 0 failed; 0 skipped; finished in 2.11ms (1.65ms CPU time)
-
-Ran 1 test suite in 11.32ms (2.11ms CPU time): 6 tests passed, 0 failed, 0 skipped (6 total tests)
+Ran 1 test suite in 8.96ms (2.66ms CPU time): 1 tests passed, 0 failed, 0 skipped (1 total tests)
