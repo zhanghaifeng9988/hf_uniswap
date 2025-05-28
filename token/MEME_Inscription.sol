@@ -4,6 +4,7 @@ pragma solidity ^0.8.20;
 import "./MEME_Token.sol";
 import "@uniswap/v2-periphery/contracts/interfaces/IUniswapV2Router02.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
+import "@openzeppelin/contracts/proxy/Clones.sol";
 
 contract MEME_Inscription {
     // 添加owner变量声明
@@ -36,14 +37,15 @@ contract MEME_Inscription {
     IUniswapV2Factory public immutable uniswapV2Factory;
     address public immutable WETH;
 
-    constructor() {
+    // 修改构造函数，接受工厂地址 (IUniswapV2Factory) 和路由器地址 (address) 作为参数
+    constructor(IUniswapV2Factory _uniswapV2Factory, address _uniswapV2RouterAddress) {
         implementation = address(new MEME_Token());
         owner = msg.sender;
-        
-        // 设置Uniswap V2地址（这里使用Sepolia测试网地址）
-        uniswapV2Router = IUniswapV2Router02(0xeE567Fe1712Faf6149d80dA1E6934E354124CfE3);
-        uniswapV2Factory = IUniswapV2Factory(0xF62c03E08ada871A0bEb309762E260a7a6a880E6);
-        WETH = uniswapV2Router.WETH();
+
+        uniswapV2Factory = _uniswapV2Factory;
+        // 将传入的路由器地址强制转换为 IUniswapV2Router02 接口类型
+        uniswapV2Router = IUniswapV2Router02(_uniswapV2RouterAddress);
+        WETH = uniswapV2Router.WETH(); // WETH 地址仍然通过路由器获取
     }
 
     /**
@@ -63,15 +65,6 @@ contract MEME_Inscription {
     // 事件：当 MEME 代币被铸造时触发
     event MemeMinted(address indexed token, address indexed minter, uint256 amount);
 
-    // /**
-    //  * @dev 构造函数
-    //  * 部署一个基础的 MEME_Token 实现合约，作为所有代理合约的模板
-    //  */
-    // constructor() {
-    //     implementation = address(new MEME_Token());
-    //     owner = msg.sender;
-    // }
-
     /**
      * @dev 部署新的 MEME 代币
      * @param symbol 代币符号
@@ -89,11 +82,12 @@ contract MEME_Inscription {
         // 验证参数的合法性
         require(perMint > 0 && perMint <= totalSupply, "Invalid perMint");
         require(perMint == 10, "perMint must be 10");
-        require(price == 10000, "Invalid price");
+        require(price == 0.0001 ether, "Invalid price");  // 每个代币 0.0001 ETH
 
-        // 使用最小代理模式部署新的代币合约
-        address proxy = createClone(implementation);
-        // 初始化代理合约 ，address(this) 是 MEME_Inscription 工厂合约的地址
+        // 使用 OpenZeppelin 的 Clones 库创建代理合约
+        address proxy = Clones.clone(implementation);
+        
+        // 初始化代理合约
         MEME_Token(proxy).initialize(symbol, totalSupply, address(this));
         
         // 存储代币相关信息
@@ -116,65 +110,124 @@ contract MEME_Inscription {
     function mintInscription(address tokenAddr) external payable {
         MemeInfo storage info = memeInfos[tokenAddr];
         require(info.creator != address(0), "Token not found");
-        require(MEME_Token(tokenAddr).minted() + info.perMint <= MEME_Token(tokenAddr).totalSupply(), "Exceeds total supply");
-        require(msg.value >= info.price * info.perMint, "Insufficient payment");
+        
+        // 获取代币的小数位数
+        uint8 decimals = MEME_Token(implementation).decimals();
+        uint256 perMintWithDecimals = info.perMint * 10**decimals;
+        
+        // 检查总供应量
+        require(MEME_Token(tokenAddr).minted() + perMintWithDecimals <= MEME_Token(tokenAddr).totalSupply(), "Exceeds total supply");
+        
+        // 检查铸币费用
+        uint256 totalFee = info.price * info.perMint;  // 0.0001 ETH * 10 = 0.001 ETH
+        require(msg.value >= totalFee, "Insufficient payment");
 
         // 计算费用分配
-        uint256 totalFee = info.price * info.perMint;
         uint256 platformFee = totalFee / 20;  // 平台收取 5% 费用
-        uint256 creatorFee = totalFee - platformFee;
+        uint256 creatorFee = totalFee - platformFee;  // meme创建者收取 95% 费用
 
-        // 铸造代币给购买者  msg.sender是用户得钱包地址，当前调用这个mintInscription函数
-        MEME_Token(tokenAddr).mint(msg.sender, info.perMint);
+        // 铸造代币给购买者
+        MEME_Token(tokenAddr).mint(msg.sender, perMintWithDecimals);
 
-        // 转账费用给平台和创建者
-        (bool success1, ) = payable(owner).call{value: platformFee}("");
-        require(success1, "Platform fee transfer failed");
+        // 转账费用给创建者
         (bool success2, ) = payable(info.creator).call{value: creatorFee}("");
         require(success2, "Creator fee transfer failed");
+
+        // 检查是否是第一次添加流动性
+        address pair = uniswapV2Factory.getPair(tokenAddr, WETH);
+        bool isFirstLiquidity = pair == address(0);
+        
+        if (isFirstLiquidity) {
+            // 如果是第一次添加流动性，使用铸币价格计算Token数量
+            // 为了保持价格一致，我们需要添加相同数量的代币和ETH
+            uint256 tokenAmount = platformFee / info.price;  // 0.00005/0.0001 = 0.5 MEME
+            uint256 tokenAmountWithDecimals = tokenAmount * 10**decimals;
+            
+            // 铸造对应数量的Token给合约
+            MEME_Token(tokenAddr).mint(address(this), tokenAmountWithDecimals);
+            
+            // 授权Router使用Token
+            MEME_Token(tokenAddr).approve(address(uniswapV2Router), tokenAmountWithDecimals);
+            
+            // 添加流动性，确保价格与铸币价格一致
+            uniswapV2Router.addLiquidityETH{value: platformFee}(
+                tokenAddr,
+                tokenAmountWithDecimals,
+                0, // 允许滑点
+                0, // 允许滑点
+                owner, // LP代币接收地址（平台所有者）
+                block.timestamp
+            );
+        } else {
+            // 如果不是第一次添加流动性，将平台费用转给owner
+            (bool success1, ) = payable(owner).call{value: platformFee}("");
+            require(success1, "Platform fee transfer failed");
+        }
 
         emit MemeMinted(tokenAddr, msg.sender, info.perMint);
     }
 
     /**
-     * @dev 创建最小代理合约
-     * @param target 目标实现合约地址
-     * @return result 新创建的代理合约地址
-     * 使用内联汇编实现 EIP-1167 最小代理模式
+     * @dev 添加流动性到Uniswap池子
+     * @param tokenAddr MEME代币地址
+     * @param tokenAmount 要添加的MEME代币数量
+     * @param amountTokenMin 最小添加的代币数量（防止滑点）
+     * @param amountETHMin 最小添加的ETH数量（防止滑点）
      */
-    function createClone(address target) internal returns (address result) {
-        bytes20 targetBytes = bytes20(target);
-        assembly {
-            // 加载空闲内存指针
-            let clone := mload(0x40)
-            // 存储代理合约的字节码
-            mstore(clone, 0x3d602d80600a3d3981f3363d3d373d3d3d363d73000000000000000000000000)
-            // 存储目标合约地址
-            mstore(add(clone, 0x14), targetBytes)
-            // 存储剩余的代理合约字节码
-            mstore(add(clone, 0x28), 0x5af43d82803e903d91602b57fd5bf30000000000000000000000000000000000)
-            // 创建新的合约
-            result := create(0, clone, 0x37)
-        }
-    }
-
-    // 添加buyMeme函数
-    function buyMeme(address tokenAddr, uint256 amountOutMin) external payable {
+    function addLiquidity(
+        address tokenAddr,
+        uint256 tokenAmount,
+        uint256 amountTokenMin,
+        uint256 amountETHMin
+    ) external payable {
         MemeInfo storage info = memeInfos[tokenAddr];
         require(info.creator != address(0), "Token not found");
-
-        // 计算平台费用（5%）
-        uint256 platformFee = msg.value / 20;
-        uint256 swapAmount = msg.value - platformFee;
+        require(msg.value > 0, "Must send ETH");
+        require(tokenAmount > 0, "Must send tokens");
 
         // 检查Uniswap上的价格
         address pair = uniswapV2Factory.getPair(tokenAddr, WETH);
         require(pair != address(0), "Liquidity pair not exists");
 
-        // 在Uniswap上购买代币
+        // 转移代币到合约
+        require(MEME_Token(tokenAddr).transferFrom(msg.sender, address(this), tokenAmount), "Token transfer failed");
+
+        // 授权Router使用代币
+        MEME_Token(tokenAddr).approve(address(uniswapV2Router), tokenAmount);
+
+        // 添加流动性
+        uniswapV2Router.addLiquidityETH{value: msg.value}(
+            tokenAddr,
+            tokenAmount,
+            amountTokenMin,
+            amountETHMin,
+            msg.sender, // LP代币给添加流动性的用户
+            block.timestamp
+        );
+    }
+
+    /**
+     * @dev 在Uniswap上购买MEME代币
+     * @param tokenAddr MEME代币地址
+     * @param amountOutMin 最小获得的代币数量（防止滑点）
+     */
+    function buyMeme(address tokenAddr, uint256 amountOutMin) external payable {
+        MemeInfo storage info = memeInfos[tokenAddr];
+        require(info.creator != address(0), "Token not found");
+        require(msg.value > 0, "Must send ETH");
+
+        // 检查Uniswap上的价格
+        address pair = uniswapV2Factory.getPair(tokenAddr, WETH);
+        require(pair != address(0), "Liquidity pair not exists");
+
+        // 创建交易路径
         address[] memory path = new address[](2);
         path[0] = WETH;
         path[1] = tokenAddr;
+
+        // 计算平台费用（5%）
+        uint256 platformFee = msg.value / 20;
+        uint256 swapAmount = msg.value - platformFee;
 
         // 使用剩余的ETH在Uniswap上购买代币
         uniswapV2Router.swapExactETHForTokensSupportingFeeOnTransferTokens{
@@ -186,20 +239,8 @@ contract MEME_Inscription {
             block.timestamp
         );
 
-        // 将平台费用的ETH和对应数量的代币添加到流动性池
-        uint256 tokenAmount = (MEME_Token(tokenAddr).balanceOf(address(this)) * platformFee) / swapAmount;
-        MEME_Token(tokenAddr).approve(address(uniswapV2Router), tokenAmount);
-
-        // 添加流动性
-        uniswapV2Router.addLiquidityETH{
-            value: platformFee
-        }(
-            tokenAddr,
-            tokenAmount,
-            0, // 允许滑点
-            0, // 允许滑点
-            owner, // LP代币接收地址（平台所有者）
-            block.timestamp
-        );
+        // 将平台费用转给owner
+        (bool success, ) = payable(owner).call{value: platformFee}("");
+        require(success, "Platform fee transfer failed");
     }
 }
