@@ -10,8 +10,6 @@ contract DeflationaryToken is ERC20, ReentrancyGuard {
 
     // 常量定义
     uint256 public constant INITIAL_SUPPLY = 100000000 * 10**18; // 1亿
-    uint256 public constant PRICE_TARGET = 1 * 10**18; // 1港币
-    uint256 public constant PRICE_DEVIATION = 5 * 10**15; // 0.5%
     uint256 public constant REBASE_INTERVAL = 1 hours;
     uint256 public constant YEARLY_DEFLATION_RATE = 100; // 1% (100 basis points)
 
@@ -20,22 +18,12 @@ contract DeflationaryToken is ERC20, ReentrancyGuard {
     uint256 public deployTimestamp;
     uint256 public rebaseIndex;
     mapping(address => uint256) public rawBalances;
-    address public oracle;
 
     // 事件
     event Rebase(uint256 timestamp, uint256 newIndex);
     event BalanceUpdated(address indexed user, uint256 newBalance);
-    event DeflationRateChanged(uint256 newRate);
 
-    // 修饰符
-    modifier onlyOracle() {
-        require(msg.sender == oracle, "Only oracle can call this function");
-        _;
-    }
-
-    constructor(address _oracle) ERC20("hf_stableCoin", "HFSC") {
-        require(_oracle != address(0), "Invalid oracle address");
-        oracle = _oracle;
+    constructor() ERC20("hf_stableCoin", "HFSC") {
         deployTimestamp = block.timestamp;
         lastRebaseTimestamp = block.timestamp;
         rebaseIndex = 10**18; // 初始rebase系数为1
@@ -66,7 +54,7 @@ contract DeflationaryToken is ERC20, ReentrancyGuard {
     }
 
     // rebase函数
-    function rebase() external onlyOracle nonReentrant {
+    function rebase() external nonReentrant {
         require(block.timestamp >= lastRebaseTimestamp.add(REBASE_INTERVAL), "Too early to rebase");
         
         // 计算年度通缩
@@ -89,12 +77,5 @@ contract DeflationaryToken is ERC20, ReentrancyGuard {
         rebaseIndex = newIndex;
         lastRebaseTimestamp = block.timestamp;
         emit Rebase(block.timestamp, rebaseIndex);
-    }
-
-    // 设置预言机地址
-    function setOracle(address _oracle) external {
-        require(msg.sender == oracle, "Only current oracle can change oracle");
-        require(_oracle != address(0), "Invalid oracle address");
-        oracle = _oracle;
     }
 } 

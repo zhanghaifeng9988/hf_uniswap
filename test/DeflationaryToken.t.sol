@@ -7,7 +7,6 @@ import "../src/DeflationaryToken.sol";
 contract DeflationaryTokenTest is Test {
     DeflationaryToken public token;
     address public owner;
-    address public oracle;
     address public user1;
     address public user2;
     address public user3;
@@ -17,7 +16,6 @@ contract DeflationaryTokenTest is Test {
     function setUp() public {
         // 设置测试账户
         owner = address(this);
-        oracle = address(0x1);
         user1 = address(0x2);
         user2 = address(0x3);
         user3 = address(0x4);
@@ -25,13 +23,12 @@ contract DeflationaryTokenTest is Test {
         user5 = address(0x6);
 
         // 部署合约
-        token = new DeflationaryToken(oracle);
+        token = new DeflationaryToken();
     }
 
     function testInitialParameters() public {
         assertEq(token.name(), "hf_stableCoin");
         assertEq(token.symbol(), "HFSC");
-        assertEq(token.oracle(), oracle);
         assertEq(token.rebaseIndex(), 1e18);
     }
 
@@ -40,7 +37,10 @@ contract DeflationaryTokenTest is Test {
     }
 
     function testTransfer() public {
-        uint256 transferAmount = 1000 * 1e18;
+        uint256 transferAmount = 1000000 * 1e18;
+        
+        // 记录转账前owner的余额
+        uint256 ownerBalanceBefore = token.balanceOf(owner);
         
         // 从owner转账给5个用户
         token.transfer(user1, transferAmount);
@@ -49,37 +49,33 @@ contract DeflationaryTokenTest is Test {
         token.transfer(user4, transferAmount);
         token.transfer(user5, transferAmount);
 
-        // 验证余额
+        // 验证用户余额
         assertEq(token.balanceOf(user1), transferAmount);
         assertEq(token.balanceOf(user2), transferAmount);
         assertEq(token.balanceOf(user3), transferAmount);
         assertEq(token.balanceOf(user4), transferAmount);
         assertEq(token.balanceOf(user5), transferAmount);
-    }
 
-    function testRebasePermissions() public {
-        // 测试非预言机账户调用rebase
-        vm.prank(user1);
-        vm.expectRevert("Only oracle can call this function");
-        token.rebase();
+        // 验证owner余额减少
+        uint256 ownerBalanceAfter = token.balanceOf(owner);
+        uint256 expectedOwnerBalance = ownerBalanceBefore - (transferAmount * 5);
+        assertEq(ownerBalanceAfter, expectedOwnerBalance, "Owner balance should decrease by total transferred amount");
     }
 
     function testRebaseTimeInterval() public {
         // 测试rebase时间间隔
-        vm.prank(oracle);
         vm.expectRevert("Too early to rebase");
         token.rebase();
     }
 
     function testRebaseExecution() public {
-        uint256 transferAmount = 1000 * 1e18;
+        uint256 transferAmount = 1000000 * 1e18;
         token.transfer(user1, transferAmount);
 
         // 增加时间
         vm.warp(block.timestamp + 1 hours + 1);
 
         // 执行rebase
-        vm.prank(oracle);
         token.rebase();
 
         // 验证rebase后的余额
@@ -88,14 +84,13 @@ contract DeflationaryTokenTest is Test {
     }
 
     function testYearlyDeflation() public {
-        uint256 transferAmount = 1000 * 1e18;
+        uint256 transferAmount = 1000000 * 1e18;
         token.transfer(user1, transferAmount);
 
         // 增加一年时间
         vm.warp(block.timestamp + 365 days);
 
         // 执行rebase
-        vm.prank(oracle);
         token.rebase();
 
         // 验证余额是否减少了1%
@@ -105,7 +100,7 @@ contract DeflationaryTokenTest is Test {
     }
 
     function testMultipleRebases() public {
-        uint256 transferAmount = 1000 * 1e18;
+        uint256 transferAmount = 1000000 * 1e18;
         token.transfer(user1, transferAmount);
 
         uint256 currentTime = block.timestamp;
@@ -113,7 +108,6 @@ contract DeflationaryTokenTest is Test {
         for(uint i = 0; i < 5; i++) {
             currentTime += 1 hours + 1;
             vm.warp(currentTime);
-            vm.prank(oracle);
             token.rebase();
         }
 
