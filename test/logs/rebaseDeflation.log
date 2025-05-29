@@ -1,0 +1,175 @@
+No files changed, compilation skipped
+
+Ran 8 tests for test/DeflationaryToken.t.sol:DeflationaryTokenTest
+[PASS] testInitialParameters() (gas: 22931)
+Traces:
+  [22931] DeflationaryTokenTest::testInitialParameters()
+    ├─ [2820] DeflationaryToken::name() [staticcall]
+    │   └─ ← [Return] "hf_stableCoin"
+    ├─ [3202] DeflationaryToken::symbol() [staticcall]
+    │   └─ ← [Return] "HFSC"
+    ├─ [2630] DeflationaryToken::oracle() [staticcall]
+    │   └─ ← [Return] ECRecover: [0x0000000000000000000000000000000000000001]
+    ├─ [2499] DeflationaryToken::rebaseIndex() [staticcall]
+    │   └─ ← [Return] 1000000000000000000 [1e18]
+    └─ ← [Return]
+
+[PASS] testInitialSupply() (gas: 13166)
+Traces:
+  [13166] DeflationaryTokenTest::testInitialSupply()
+    ├─ [4913] DeflationaryToken::balanceOf(DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   └─ ← [Return] 100000000000000000000000000 [1e26]
+    ├─ [327] DeflationaryToken::INITIAL_SUPPLY() [staticcall]
+    │   └─ ← [Return] 100000000000000000000000000 [1e26]
+    └─ ← [Return]
+
+[PASS] testMultipleRebases() (gas: 114333)
+Traces:
+  [114333] DeflationaryTokenTest::testMultipleRebases()
+    ├─ [63390] DeflationaryToken::transfer(SHA-256: [0x0000000000000000000000000000000000000002], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99999000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: SHA-256: [0x0000000000000000000000000000000000000002], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: SHA-256: [0x0000000000000000000000000000000000000002], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [0] VM::warp(3602)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [16763] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 3602, newIndex: 990000000000000000 [9.9e17])
+    │   └─ ← [Return]
+    ├─ [0] VM::warp(7203)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [3163] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 7203, newIndex: 980100000000000000 [9.801e17])
+    │   └─ ← [Return]
+    ├─ [0] VM::warp(10804 [1.08e4])
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [3163] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 10804 [1.08e4], newIndex: 970299000000000000 [9.702e17])
+    │   └─ ← [Return]
+    ├─ [0] VM::warp(14405 [1.44e4])
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [3163] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 14405 [1.44e4], newIndex: 960596010000000000 [9.605e17])
+    │   └─ ← [Return]
+    ├─ [0] VM::warp(18006 [1.8e4])
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [3163] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 18006 [1.8e4], newIndex: 950990049900000000 [9.509e17])
+    │   └─ ← [Return]
+    ├─ [913] DeflationaryToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   └─ ← [Return] 950990049900000000000 [9.509e20]
+    └─ ← [Return]
+
+[PASS] testRebaseExecution() (gas: 95588)
+Traces:
+  [95588] DeflationaryTokenTest::testRebaseExecution()
+    ├─ [63390] DeflationaryToken::transfer(SHA-256: [0x0000000000000000000000000000000000000002], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99999000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: SHA-256: [0x0000000000000000000000000000000000000002], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: SHA-256: [0x0000000000000000000000000000000000000002], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [0] VM::warp(3602)
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [16763] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 3602, newIndex: 990000000000000000 [9.9e17])
+    │   └─ ← [Return]
+    ├─ [913] DeflationaryToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   └─ ← [Return] 990000000000000000000 [9.9e20]
+    └─ ← [Return]
+
+[PASS] testRebasePermissions() (gas: 13526)
+Traces:
+  [13526] DeflationaryTokenTest::testRebasePermissions()
+    ├─ [0] VM::prank(SHA-256: [0x0000000000000000000000000000000000000002])
+    │   └─ ← [Return]
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  "Only oracle can call this function)
+    │   └─ ← [Return]
+    ├─ [2838] DeflationaryToken::rebase()
+    │   └─ ← [Revert] Only oracle can call this function
+    └─ ← [Return]
+
+[PASS] testRebaseTimeInterval() (gas: 18292)
+Traces:
+  [18292] DeflationaryTokenTest::testRebaseTimeInterval()
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [0] VM::expectRevert(custom error 0xf28dceb3:  Too early to rebase)
+    │   └─ ← [Return]
+    ├─ [7094] DeflationaryToken::rebase()
+    │   └─ ← [Revert] Too early to rebase
+    └─ ← [Return]
+
+[PASS] testTransfer() (gas: 296860)
+Traces:
+  [296860] DeflationaryTokenTest::testTransfer()
+    ├─ [63390] DeflationaryToken::transfer(SHA-256: [0x0000000000000000000000000000000000000002], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99999000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: SHA-256: [0x0000000000000000000000000000000000000002], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: SHA-256: [0x0000000000000000000000000000000000000002], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [51790] DeflationaryToken::transfer(RIPEMD-160: [0x0000000000000000000000000000000000000003], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99998000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: RIPEMD-160: [0x0000000000000000000000000000000000000003], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: RIPEMD-160: [0x0000000000000000000000000000000000000003], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [51790] DeflationaryToken::transfer(Identity: [0x0000000000000000000000000000000000000004], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99997000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: Identity: [0x0000000000000000000000000000000000000004], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: Identity: [0x0000000000000000000000000000000000000004], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [51790] DeflationaryToken::transfer(ModExp: [0x0000000000000000000000000000000000000005], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99996000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: ModExp: [0x0000000000000000000000000000000000000005], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: ModExp: [0x0000000000000000000000000000000000000005], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [51790] DeflationaryToken::transfer(ECAdd: [0x0000000000000000000000000000000000000006], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99995000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: ECAdd: [0x0000000000000000000000000000000000000006], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: ECAdd: [0x0000000000000000000000000000000000000006], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [913] DeflationaryToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   └─ ← [Return] 1000000000000000000000 [1e21]
+    ├─ [913] DeflationaryToken::balanceOf(RIPEMD-160: [0x0000000000000000000000000000000000000003]) [staticcall]
+    │   └─ ← [Return] 1000000000000000000000 [1e21]
+    ├─ [913] DeflationaryToken::balanceOf(Identity: [0x0000000000000000000000000000000000000004]) [staticcall]
+    │   └─ ← [Return] 1000000000000000000000 [1e21]
+    ├─ [913] DeflationaryToken::balanceOf(ModExp: [0x0000000000000000000000000000000000000005]) [staticcall]
+    │   └─ ← [Return] 1000000000000000000000 [1e21]
+    ├─ [913] DeflationaryToken::balanceOf(ECAdd: [0x0000000000000000000000000000000000000006]) [staticcall]
+    │   └─ ← [Return] 1000000000000000000000 [1e21]
+    └─ ← [Return]
+
+[PASS] testYearlyDeflation() (gas: 95320)
+Traces:
+  [95320] DeflationaryTokenTest::testYearlyDeflation()
+    ├─ [63390] DeflationaryToken::transfer(SHA-256: [0x0000000000000000000000000000000000000002], 1000000000000000000000 [1e21])
+    │   ├─ emit BalanceUpdated(user: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], newBalance: 99999000000000000000000000 [9.999e25])
+    │   ├─ emit BalanceUpdated(user: SHA-256: [0x0000000000000000000000000000000000000002], newBalance: 1000000000000000000000 [1e21])
+    │   ├─ emit Transfer(from: DeflationaryTokenTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496], to: SHA-256: [0x0000000000000000000000000000000000000002], value: 1000000000000000000000 [1e21])
+    │   └─ ← [Return] true
+    ├─ [0] VM::warp(31536001 [3.153e7])
+    │   └─ ← [Return]
+    ├─ [0] VM::prank(ECRecover: [0x0000000000000000000000000000000000000001])
+    │   └─ ← [Return]
+    ├─ [16834] DeflationaryToken::rebase()
+    │   ├─ emit Rebase(timestamp: 31536001 [3.153e7], newIndex: 990000000000000000 [9.9e17])
+    │   └─ ← [Return]
+    ├─ [913] DeflationaryToken::balanceOf(SHA-256: [0x0000000000000000000000000000000000000002]) [staticcall]
+    │   └─ ← [Return] 990000000000000000000 [9.9e20]
+    └─ ← [Return]
+
+Suite result: ok. 8 passed; 0 failed; 0 skipped; finished in 2.13ms (5.21ms CPU time)
+
+Ran 1 test suite in 21.46ms (2.13ms CPU time): 8 tests passed, 0 failed, 0 skipped (8 total tests)
